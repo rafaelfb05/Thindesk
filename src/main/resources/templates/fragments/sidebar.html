@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div th:fragment="sidebar">
+    <div id="sidebar" class="d-flex flex-column">
+        <h4 class="text-center py-3">Thindesk Menu</h4>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/}" aria-current="page">Início</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/chamados}">
+                    <i class="bi bi-headset"></i> <span class="d-none d-md-inline">Chamados</span>
+                </a>
+            </li>
+            <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','TECNICO')">
+                <a class="nav-link" th:href="@{/clientes}">
+                    <i class="bi bi-person"></i> <span class="d-none d-md-inline">Clientes</span>
+                </a>
+            </li>
+            <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                <a class="nav-link" href="#" onclick="toggleSubmenu(event, this)">
+                    Configurações
+                    <span class="float-end">&#9662;</span>
+                </a>
+                <ul class="nav flex-column submenu">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/tecnicos}">
+                            <i class="bi bi-person"></i> <span class="d-none d-md-inline">Técnicos</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/tipo-chamado}">
+                            <i class="bi bi-megaphone"></i> <span class="d-none d-md-inline">Tipo de Chamado</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/ajustes-horarios}">
+                            <i class="bi bi-alarm"></i> <span class="d-none d-md-inline">Horário de Atendimento</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/recursos}">
+                            <i class="bi bi-screwdriver"></i> <span class="d-none d-md-inline">Recursos</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/usuarios}">
+                            <i class="bi bi-people"></i> <span class="d-none d-md-inline">Usuários</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="mt-auto p-3 border-top border-secondary" sec:authorize="isAuthenticated()">
+            <div class="small text-truncate" sec:authentication="name">email@exemplo.com</div>
+            <span class="badge text-bg-warning" sec:authorize="hasRole('ADMIN')">Administrador</span>
+            <span class="badge text-bg-info" sec:authorize="hasRole('TECNICO')">Técnico</span>
+            <span class="badge text-bg-secondary" sec:authorize="hasRole('CLIENTE')">Cliente</span>
+            <form th:action="@{/logout}" method="post" class="mt-2">
+                <button type="submit" class="btn btn-outline-light btn-sm w-100">
+                    <i class="bi bi-box-arrow-right"></i> Sair
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

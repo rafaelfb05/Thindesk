@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+  <title>Novo Técnico</title>
+</head>
+<body>
+<section>
+  <div class="container mt-4" style="max-width: 600px;">
+    <h2 class="mb-4">Novo Técnico</h2>
+
+    <form th:action="@{/tecnicos/salvar}" th:object="${tecnico}" method="post" novalidate>
+      <div class="mb-3">
+        <label for="nome" class="form-label">Nome</label>
+        <input type="text" id="nome" class="form-control" th:field="*{nome}"
+               th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'">
+        <div class="invalid-feedback" th:errors="*{nome}"></div>
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">E-mail</label>
+        <input type="email" id="email" class="form-control" th:field="*{email}"
+               th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'">
+        <div class="invalid-feedback" th:errors="*{email}"></div>
+      </div>
+
+      <div class="mb-3">
+        <label for="senha" class="form-label">Senha inicial</label>
+        <div class="input-group has-validation">
+          <input type="password" id="senha" class="form-control" th:field="*{senha}"
+                 th:classappend="${#fields.hasErrors('senha')} ? 'is-invalid'">
+          <button type="button" class="btn btn-outline-secondary" data-toggle-senha
+                  aria-label="Mostrar senha" title="Mostrar senha">
+            <i class="bi bi-eye"></i>
+          </button>
+          <div class="invalid-feedback" th:errors="*{senha}"></div>
+        </div>
+        <div class="form-text">
+          De 8 a 64 caracteres, com maiúscula, minúscula, número e símbolo.
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Salvar</button>
+      <a th:href="@{/tecnicos}" class="btn btn-secondary">Voltar</a>
+    </form>
+  </div>
+  <script th:src="@{/js/senha-toggle.js}"></script>
+</section>
+</body>
+</html>

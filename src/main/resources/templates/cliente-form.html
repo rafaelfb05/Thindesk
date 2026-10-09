@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Cliente - Thindesk</title>
+</head>
+<body>
+<section>
+    <div class="container mt-4" style="max-width: 600px;">
+        <h2 class="mb-4" th:text="${clienteId == null} ? 'Novo Cliente' : 'Editar Cliente'">Cliente</h2>
+
+        <form th:action="${clienteId == null} ? @{/clientes/salvar} : @{/clientes/editar/{id}(id=${clienteId})}"
+              th:object="${cliente}" method="post" novalidate>
+
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome</label>
+                <input type="text" id="nome" class="form-control" th:field="*{nome}"
+                       th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'">
+                <div class="invalid-feedback" th:errors="*{nome}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="telefone" class="form-label">Telefone</label>
+                <input type="text" id="telefone" class="form-control" th:field="*{telefone}"
+                       th:classappend="${#fields.hasErrors('telefone')} ? 'is-invalid'">
+                <div class="invalid-feedback" th:errors="*{telefone}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="setor" class="form-label">Setor</label>
+                <input type="text" id="setor" class="form-control" th:field="*{setor}"
+                       th:classappend="${#fields.hasErrors('setor')} ? 'is-invalid'">
+                <div class="invalid-feedback" th:errors="*{setor}"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a th:href="@{/clientes}" class="btn btn-secondary">Voltar</a>
+        </form>
+    </div>
+</section>
+</body>
+</html>

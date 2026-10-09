@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Lista de Clientes</title>
+</head>
+<body>
+<section>
+    <div class="container mt-4">
+        <h1 class="mt-4">Clientes</h1>
+
+        <div class="alert alert-success mt-3" th:if="${sucesso}" th:text="${sucesso}"></div>
+        <div class="alert alert-danger mt-3" th:if="${erro}" th:text="${erro}"></div>
+
+        <a th:href="@{/clientes/novo}" class="btn btn-primary btn-sm mt-3">Novo</a>
+        <table class="table table-bordered table-striped mt-3">
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>Setor</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cliente : ${clientes}">
+                <td th:text="${cliente.nome}"></td>
+                <td th:text="${cliente.telefone}"></td>
+                <td th:text="${cliente.setor}"></td>
+                <td>
+                    <a th:href="@{'/clientes/editar/' + ${cliente.id}}" class="btn btn-warning btn-sm">Editar</a>
+                    <form sec:authorize="hasRole('ADMIN')"
+                          th:action="@{'/clientes/deletar/' + ${cliente.id}}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+</body>
+</html>

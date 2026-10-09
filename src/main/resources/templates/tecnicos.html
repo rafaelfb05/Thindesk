@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Técnicos</title>
+</head>
+<body>
+<section>
+    <div class="container mt-4">
+        <h2 class="mb-4">Técnicos</h2>
+
+        <div class="alert alert-success" th:if="${sucesso}" th:text="${sucesso}"></div>
+
+        <a th:href="@{/tecnicos/novo}" class="btn btn-primary btn-sm mb-3">Novo</a>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Situação</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="t : ${tecnicos}">
+                <td th:text="${t.nome}"></td>
+                <td th:text="${t.email}"></td>
+                <td>
+                    <span class="badge text-bg-success" th:if="${t.ativo}">Ativo</span>
+                    <span class="badge text-bg-secondary" th:unless="${t.ativo}">Inativo</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <p class="text-muted small">
+            Para ativar, desativar ou mudar o perfil de um técnico, use
+            <a th:href="@{/admin/usuarios}">Configurações &gt; Usuários</a>.
+        </p>
+    </div>
+</section>
+</body>
+</html>

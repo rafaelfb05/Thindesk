@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Usuários - Thindesk</title>
+</head>
+<body>
+<section>
+    <div class="container mt-4">
+        <h2 class="mb-4">Usuários</h2>
+
+        <div class="alert alert-success" th:if="${sucesso}" th:text="${sucesso}"></div>
+        <div class="alert alert-danger" th:if="${erro}" th:text="${erro}"></div>
+
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Perfil</th>
+                    <th>Situação</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="u : ${usuarios}"
+                    th:with="eVoce=${u.email == #authentication.name}">
+                    <td th:text="${u.nome}"></td>
+                    <td>
+                        <span th:text="${u.email}"></span>
+                        <span class="badge text-bg-light" th:if="${eVoce}">você</span>
+                    </td>
+
+                    <td>
+                        <form th:action="@{/admin/usuarios/{id}/tipo(id=${u.id})}" method="post"
+                              class="d-flex gap-2">
+                            <select name="tipo" class="form-select form-select-sm" th:disabled="${eVoce}">
+                                <option th:each="t : ${tipos}" th:value="${t}" th:text="${t}"
+                                        th:selected="${t == u.tipo}"></option>
+                            </select>
+                            <button type="submit" class="btn btn-primary btn-sm" th:disabled="${eVoce}">Salvar</button>
+                        </form>
+                    </td>
+
+                    <td>
+                        <span class="badge text-bg-success" th:if="${u.ativo}">Ativo</span>
+                        <span class="badge text-bg-secondary" th:unless="${u.ativo}">Inativo</span>
+                    </td>
+
+                    <td>
+                        <form th:action="@{/admin/usuarios/{id}/ativo(id=${u.id})}" method="post" class="d-inline">
+                            <input type="hidden" name="ativo" th:value="${!u.ativo}">
+                            <button type="submit" th:disabled="${eVoce}"
+                                    th:classappend="${u.ativo} ? 'btn-danger' : 'btn-success'"
+                                    th:text="${u.ativo} ? 'Desativar' : 'Ativar'"
+                                    class="btn btn-sm">Desativar</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+</body>
+</html>

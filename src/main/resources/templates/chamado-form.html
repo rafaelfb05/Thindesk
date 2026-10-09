@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Novo Chamado - Thindesk</title>
+</head>
+<body>
+<section>
+    <div class="container mt-4" style="max-width: 700px;">
+        <h2 class="mb-4">Novo Chamado</h2>
+
+        <form th:action="@{/chamados/salvar}" th:object="${chamado}" method="post">
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Descrição</label>
+                <textarea id="descricao" class="form-control" rows="3" th:field="*{descricao}" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="tipo" class="form-label">Tipo</label>
+                <input type="text" id="tipo" class="form-control" th:field="*{tipo}" required>
+            </div>
+
+            <div sec:authorize="hasAnyRole('ADMIN','TECNICO')">
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select id="status" class="form-select" th:field="*{status}">
+                        <option value="ABERTO">Aberto</option>
+                        <option value="EM_ANDAMENTO">Em Andamento</option>
+                        <option value="CONCLUIDO">Concluído</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="tecnico" class="form-label">Técnico</label>
+                    <input type="text" id="tecnico" class="form-control" th:field="*{tecnico}">
+                </div>
+                <div class="mb-3">
+                    <label for="usuario" class="form-label">Usuário (e-mail do solicitante)</label>
+                    <input type="text" id="usuario" class="form-control" th:field="*{usuario}">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a th:href="@{/chamados}" class="btn btn-secondary">Voltar</a>
+        </form>
+    </div>
+</section>
+</body>
+</html>

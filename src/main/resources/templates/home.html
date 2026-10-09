@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Início - Thindesk</title>
+</head>
+<body>
+<section>
+    <div class="container-fluid vh-100 d-flex justify-content-center align-items-center">
+        <div class="text-center">
+            <h1>Bem-vindo ao</h1>
+            <img th:src="@{/images/logo.png}" alt="Logo" width="500" height="500">
+        </div>
+    </div>
+</section>
+</body>
+</html>

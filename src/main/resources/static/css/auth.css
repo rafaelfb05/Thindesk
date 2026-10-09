@@ -1,0 +1,61 @@
+:root {
+    --cor-primaria: #ff9248;
+    --cor-primaria-hover: #e87d33;
+    --cor-primaria-texto: #1a1a1a;
+    --cor-fundo: #f8f9fa;
+    --cor-card: #ffffff;
+    --cor-texto: #212529;
+    --raio-borda: 8px;
+}
+
+body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+}
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 2rem;
+    background-color: var(--cor-card);
+    border-radius: var(--raio-borda);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.auth-logo {
+    width: 110px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.btn-tema {
+    background-color: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+    color: var(--cor-primaria-texto);
+    font-weight: 600;
+}
+
+.btn-tema:hover,
+.btn-tema:focus {
+    background-color: var(--cor-primaria-hover);
+    border-color: var(--cor-primaria-hover);
+    color: var(--cor-primaria-texto);
+}
+
+.auth-card a {
+    color: var(--cor-primaria-hover);
+}
+
+.auth-card .btn-link {
+    --bs-btn-color: var(--cor-primaria-hover);
+    --bs-btn-hover-color: var(--cor-primaria-hover);
+    --bs-btn-active-color: var(--cor-primaria-hover);
+}
