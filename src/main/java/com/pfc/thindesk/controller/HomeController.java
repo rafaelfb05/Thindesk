@@ -34,8 +34,47 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String home() {
+    public String home(Model model, Authentication auth) {
+        boolean equipe = auth.getAuthorities().stream().anyMatch(a ->
+                a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_TECNICO"));
+
+        List<Chamado> lista = equipe
+                ? chamadoService.listarChamados()
+                : chamadoService.listarPorUsuario(auth.getName());
+
+        long total = lista.size();
+        long abertos = contar(lista, "ABERTO");
+        long andamento = contar(lista, "EM_ANDAMENTO");
+        long resolvidos = contar(lista, "CONCLUIDO", "RESOLVIDO");
+        long cancelados = contar(lista, "CANCELADO");
+
+        model.addAttribute("escopo", equipe ? "Todos os chamados do sistema" : "Seus chamados");
+        model.addAttribute("total", total);
+        model.addAttribute("abertos", abertos);
+        model.addAttribute("andamento", andamento);
+        model.addAttribute("resolvidos", resolvidos);
+        model.addAttribute("cancelados", cancelados);
+        model.addAttribute("pctAbertos", porcentagem(abertos, total));
+        model.addAttribute("pctAndamento", porcentagem(andamento, total));
+        model.addAttribute("pctResolvidos", porcentagem(resolvidos, total));
+        model.addAttribute("pctCancelados", porcentagem(cancelados, total));
         return "home";
+    }
+
+    private static long contar(List<Chamado> lista, String... statuses) {
+        return lista.stream()
+                .filter(c -> c.getStatus() != null)
+                .filter(c -> {
+                    for (String s : statuses) {
+                        if (c.getStatus().equalsIgnoreCase(s)) return true;
+                    }
+                    return false;
+                })
+                .count();
+    }
+
+    private static long porcentagem(long parte, long total) {
+        return total == 0 ? 0 : Math.round(parte * 100.0 / total);
     }
 
     @GetMapping("/acesso-negado")

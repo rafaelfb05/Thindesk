@@ -2,15 +2,76 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout :: layout(~{::title}, ~{::section})}">
 <head>
-    <title>Início - Thindesk</title>
+    <title>Dashboard - Thindesk</title>
 </head>
 <body>
 <section>
-    <div class="container-fluid vh-100 d-flex justify-content-center align-items-center">
-        <div class="text-center">
-            <h1>Bem-vindo ao</h1>
-            <img th:src="@{/images/logo.png}" alt="Logo" width="500" height="500">
+    <div class="container mt-4">
+        <h2 class="mb-1">Dashboard</h2>
+        <p class="text-muted" th:text="${escopo}">Escopo</p>
+
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-lg">
+                <div class="card text-bg-primary h-100">
+                    <div class="card-body">
+                        <div class="small">Total de chamados</div>
+                        <div class="display-5 fw-bold" th:text="${total}">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg">
+                <div class="card text-bg-warning h-100">
+                    <div class="card-body">
+                        <div class="small">Abertos</div>
+                        <div class="display-5 fw-bold" th:text="${abertos}">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg">
+                <div class="card text-bg-info h-100">
+                    <div class="card-body">
+                        <div class="small">Em andamento</div>
+                        <div class="display-5 fw-bold" th:text="${andamento}">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg">
+                <div class="card text-bg-success h-100">
+                    <div class="card-body">
+                        <div class="small">Resolvidos</div>
+                        <div class="display-5 fw-bold" th:text="${resolvidos}">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg">
+                <div class="card text-bg-danger h-100">
+                    <div class="card-body">
+                        <div class="small">Cancelados</div>
+                        <div class="display-5 fw-bold" th:text="${cancelados}">0</div>
+                    </div>
+                </div>
+            </div>
         </div>
+            <div class="card-body">
+                <h5 class="card-title">Distribuição por status</h5>
+                <div class="progress" style="height: 28px;">
+                    <div class="progress-bar bg-warning text-dark" th:style="'width:' + ${pctAbertos} + '%'"
+                         th:text="${pctAbertos > 0} ? ${pctAbertos} + '%' : ''"></div>
+                    <div class="progress-bar bg-info text-dark" th:style="'width:' + ${pctAndamento} + '%'"
+                         th:text="${pctAndamento > 0} ? ${pctAndamento} + '%' : ''"></div>
+                    <div class="progress-bar bg-success" th:style="'width:' + ${pctResolvidos} + '%'"
+                         th:text="${pctResolvidos > 0} ? ${pctResolvidos} + '%' : ''"></div>
+                    <div class="progress-bar bg-danger" th:style="'width:' + ${pctCancelados} + '%'"
+                         th:text="${pctCancelados > 0} ? ${pctCancelados} + '%' : ''"></div>
+                </div>
+                <div class="small mt-2 text-muted">
+                    Amarelo: abertos · Azul: em andamento · Verde: resolvidos · Vermelho: cancelados
+                </div>
+            </div>
+        </div>
+
+        <a th:href="@{/chamados}" class="btn btn-primary">Ver chamados</a>
+        <a th:href="@{/chamados/novo}" class="btn btn-outline-primary">Novo chamado</a>
     </div>
 </section>
 </body>

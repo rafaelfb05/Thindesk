@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Resolver Chamado - Thindesk</title>
+</head>
+<body>
+<section>
+    <div class="container mt-4" style="max-width: 700px;">
+        <h2 class="mb-4">Resolver chamado</h2>
+
+        <div class="alert alert-danger" th:if="${erro}" th:text="${erro}"></div>
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${chamado.titulo} ?: '(sem título)'"></h5>
+                <p class="card-text" th:text="${chamado.descricao}"></p>
+                <div class="small text-muted">
+                    Solicitante: <span th:text="${chamado.usuario}"></span>
+                </div>
+            </div>
+        </div>
+
+        <form th:action="@{'/chamados/resolver/' + ${chamado.id}}" method="post">
+            <div class="mb-3">
+                <label for="solucao" class="form-label">Solução aplicada</label>
+                <textarea id="solucao" name="solucao" class="form-control" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Marcar como resolvido</button>
+            <a th:href="@{/chamados}" class="btn btn-secondary">Voltar</a>
+        </form>
+    </div>
+</section>
+</body>
+</html>

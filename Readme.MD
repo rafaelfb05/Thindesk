@@ -4,6 +4,47 @@ Sistema de autenticação e autorização em **Java Spring Boot**, **Thymeleaf**
 
 O núcleo de segurança (usuários, perfis, senhas, 2FA, recuperação) é **independente do assunto do sistema**. O domínio de exemplo é um *help desk* (chamados, clientes e horários de atendimento), mantido separado da parte de segurança.
 
+## Versão e versionamento
+
+**Versão atual: `1.1.0-beta`**
+
+O projeto segue o [Versionamento Semântico (SemVer)](https://semver.org/lang/pt-BR/), no formato:
+
+```
+MAJOR.MINOR.PATCH-etiqueta      ex.: 1.1.0-beta
+```
+
+| Parte | Quando muda |
+|---|---|
+| **MAJOR** | Mudança que quebra a compatibilidade (ex.: troca da estrutura do banco) |
+| **MINOR** | Funcionalidade nova que não quebra o que já existia |
+| **PATCH** | Correção de erro, sem funcionalidade nova |
+| **etiqueta** | Estágio da versão: `alpha` (inicial), `beta` (funcional, em testes), `rc` (candidata a final). Sem etiqueta = estável |
+
+Cada versão é marcada no Git com uma tag no formato `vMAJOR.MINOR.PATCH-etiqueta` (ex.: `v1.1.0-beta`), e o mesmo número fica no `pom.xml`.
+
+| Versão | Conteúdo |
+|---|---|
+| `1.0-alpha` | Versão inicial (equivale a `1.0.0-alpha`): login, cadastro, perfis, 2FA, recuperação de senha e CRUD básico de chamados |
+| `1.1.0-beta` | Regras de negócio de chamados (título e descrição obrigatórios, resolução com solução registrada, chamado resolvido não pode ser alterado), tela de resolução, dashboard e deploy |
+
+## Dashboard
+
+A tela inicial mostra o total de chamados e a distribuição por status. Técnicos e administradores veem todos os chamados; clientes veem só os seus.
+
+!![img.png](img.png)
+
+## Arquitetura: ThinDesk e microsserviço de chamados
+
+O sistema é dividido em dois projetos, em repositórios separados, que usam o mesmo banco MongoDB Atlas:
+
+| Projeto | Função |
+|---|---|
+| **ThinDesk** (este repositório) | Aplicação web: login, 2FA, perfis, telas de chamados, clientes, técnicos e dashboard |
+| [Microsserviço de chamados](https://github.com/rafaelfb05/thindesk-microsservico-chamados) | API REST de chamados: `POST /api/chamados`, `GET /api/chamados/usuario/{id}`, `GET /api/chamados/{id}` e `PUT /api/chamados/{id}/resolver` |
+
+As regras de negócio de chamados do microsserviço também estão aplicadas no ThinDesk (classe `ChamadoService`), para que as telas e a API se comportem do mesmo jeito.
+
 ## Sumário
 
 1. [Funcionalidades](#1-funcionalidades)

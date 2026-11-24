@@ -9,36 +9,59 @@
 <section>
     <div class="container mt-4">
         <h2 class="mb-4">Lista de Chamados</h2>
-        <a th:href="@{/chamados/novo}" class="btn btn-primary btn-sm mb-3">Novo</a>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Descricao</th>
-                <th>Status</th>
-                <th>Tipo</th>
-                <th>Tecnico</th>
-                <th>Usuário</th>
-            </tr>
-            </thead>
-            <tbody>
-            <th:block th:each="chamado : ${chamados}">
+
+        <div class="alert alert-danger" th:if="${erro}" th:text="${erro}"></div>
+        <div class="alert alert-success" th:if="${sucesso}" th:text="${sucesso}"></div>
+
+        <a th:href="@{/chamados/novo}" class="btn btn-primary btn-sm mb-3">Novo chamado</a>
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead>
                 <tr>
-                    <td th:text="${chamado?.descricao}"></td>
-                    <td th:text="${chamado?.status}"></td>
-                    <td th:text="${chamado?.tipo}"></td>
-                    <td th:text="${chamado?.tecnico}"></td>
-                    <td th:text="${chamado?.usuario}"></td>
-                    <td>
-                        <a sec:authorize="hasAnyRole('ADMIN','TECNICO')"
-                           th:href="@{'/chamados/atualizar/' + ${chamado.id}}" class="btn btn-warning btn-sm">Editar</a>
-                        <form th:action="@{'/chamados/cancelar/' + ${chamado.id}}" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
-                        </form>
-                    </td>
+                    <th>Título</th>
+                    <th>Status</th>
+                    <th>Tipo</th>
+                    <th>Técnico</th>
+                    <th>Solicitante</th>
+                    <th>Abertura</th>
+                    <th>Ações</th>
                 </tr>
-            </th:block>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                <th:block th:each="chamado : ${chamados}">
+                    <tr>
+                        <td>
+                            <div class="fw-semibold" th:text="${chamado.titulo} ?: '(sem título)'"></div>
+                            <div class="small text-muted" th:text="${chamado.descricao}"></div>
+                            <div class="small text-success" th:if="${chamado.solucao}">
+                                Solução: <span th:text="${chamado.solucao}"></span>
+                            </div>
+                        </td>
+                        <td>
+                        <span class="badge" th:text="${chamado.status}"
+                              th:classappend="${chamado.status == 'RESOLVIDO' or chamado.status == 'CONCLUIDO'} ? 'text-bg-success' : (${chamado.status == 'CANCELADO'} ? 'text-bg-danger' : (${chamado.status == 'EM_ANDAMENTO'} ? 'text-bg-info' : 'text-bg-warning'))"></span>
+                        </td>
+                        <td th:text="${chamado.tipo}"></td>
+                        <td th:text="${chamado.tecnico}"></td>
+                        <td th:text="${chamado.usuario}"></td>
+                        <td th:text="${chamado.dataAbertura != null} ? ${#temporals.format(chamado.dataAbertura, 'dd/MM/yyyy HH:mm')} : '-'"></td>
+                        <td>
+                            <a sec:authorize="hasAnyRole('ADMIN','TECNICO')"
+                               th:unless="${chamado.status == 'RESOLVIDO' or chamado.status == 'CANCELADO'}"
+                               th:href="@{'/chamados/resolver/' + ${chamado.id}}" class="btn btn-success btn-sm">Resolver</a>
+                            <a sec:authorize="hasAnyRole('ADMIN','TECNICO')"
+                               th:unless="${chamado.status == 'RESOLVIDO'}"
+                               th:href="@{'/chamados/atualizar/' + ${chamado.id}}" class="btn btn-warning btn-sm">Editar</a>
+                            <form th:unless="${chamado.status == 'RESOLVIDO' or chamado.status == 'CANCELADO'}"
+                                  th:action="@{'/chamados/cancelar/' + ${chamado.id}}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
+                            </form>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
     </div>
 </section>
 </body>

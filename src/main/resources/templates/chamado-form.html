@@ -10,7 +10,14 @@
     <div class="container mt-4" style="max-width: 700px;">
         <h2 class="mb-4">Novo Chamado</h2>
 
+        <div class="alert alert-danger" th:if="${erro}" th:text="${erro}"></div>
+
         <form th:action="@{/chamados/salvar}" th:object="${chamado}" method="post">
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Título</label>
+                <input type="text" id="titulo" class="form-control" th:field="*{titulo}" required>
+            </div>
+
             <div class="mb-3">
                 <label for="descricao" class="form-label">Descrição</label>
                 <textarea id="descricao" class="form-control" rows="3" th:field="*{descricao}" required></textarea>
@@ -27,7 +34,6 @@
                     <select id="status" class="form-select" th:field="*{status}">
                         <option value="ABERTO">Aberto</option>
                         <option value="EM_ANDAMENTO">Em Andamento</option>
-                        <option value="CONCLUIDO">Concluído</option>
                     </select>
                 </div>
                 <div class="mb-3">
