@@ -45,6 +45,28 @@ O sistema é dividido em dois projetos, em repositórios separados, que usam o m
 
 As regras de negócio de chamados do microsserviço também estão aplicadas no ThinDesk (classe `ChamadoService`), para que as telas e a API se comportem do mesmo jeito.
 
+## Aplicação em produção (deploy)
+
+**Link:** https://thindesk-2dkj.onrender.com/
+
+> A aplicação está no plano gratuito do Render, que "dorme" após 15 minutos sem acesso. O primeiro acesso depois disso pode levar cerca de 1 minuto para carregar.
+
+### Credenciais de demonstração
+
+| Perfil | E-mail | Senha | O que pode fazer |
+|---|---|---|---|
+| Cliente | `cliente.demo@thindesk.com` | `Demo@2026` | Abrir e acompanhar os próprios chamados |
+| Técnico | `tecnico.demo@thindesk.com` | `Demo@2026` | Ver todos os chamados e resolvê-los |
+
+O cadastro de novos usuários também está aberto em `/registro` (sempre como cliente).
+
+### Como o deploy foi feito
+
+- Plataforma: [Render](https://render.com), com `Dockerfile` na raiz do projeto.
+- Banco de dados: MongoDB Atlas.
+- Segredos (`MONGODB_URI`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`) ficam em variáveis de ambiente da plataforma, nunca no código.
+- A verificação em duas etapas (2FA) está desativada neste ambiente de demonstração (`DOIS_FATORES_ATIVO=false`), para permitir o acesso sem e-mail.
+
 ## Sumário
 
 1. [Funcionalidades](#1-funcionalidades)
